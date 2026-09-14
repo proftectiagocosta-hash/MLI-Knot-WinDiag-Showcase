@@ -5,33 +5,60 @@
 ```text
 source project: private/local
 public surface: sanitized showcase
-implemented roadmap milestone: 0.1 Foundation
+current baseline: 0.1.0 Foundation
+foundation implementation: present
+recorded Windows Release build: passed
+recorded smoke tests: passed
+experimentally validated environment: Windows 10 Pro 22H2 x64 / PowerShell 5.1 / .NET SDK 10.0.302
 next roadmap milestone: 0.2 Stabilization
-named roadmap milestone count: 6
-completed named milestone count: 1
-public milestone-count marker: 16.7%
 production readiness: not claimed
 ```
 
-## What 16.7% means
+## Proven implementation
 
-The canonical roadmap names six milestones:
+The private source tree contains the application, CLI, core orchestration, Windows-specific collectors and operations, smoke tests, configuration, build/test scripts and WinPE assets.
 
-1. 0.1 Foundation
-2. 0.2 Stabilization
-3. 0.3 Controlled repair
-4. 0.4 OEM adapters
-5. 0.5 Remote management
-6. 1.0 Stable product
+The implemented baseline covers local diagnostics, reporting, safe-cleanup mechanisms, reversible startup-Registry remediation, update discovery, dashboard/CLI operation and recovery-oriented tooling.
 
-The source explicitly marks `0.1 Foundation` as implemented.
+## Recorded validation
 
-Therefore this showcase reports **1/6 = 16.7%** using an equal-weight count of named roadmap milestones.
+A source checkpoint records:
 
-This is intentionally not a measure of engineering effort. A roadmap milestone may be much larger or smaller than another.
+- successful Release build of the solution;
+- successful compilation of Core, Windows, CLI, App and SmokeTests;
+- passing smoke tests;
+- passing structural audit for that recorded checkpoint;
+- validated `.NET` executable resolution;
+- automatic build/test logs functioning at that checkpoint.
 
-## Current maturity
+The current source changelog separately records the later correction that made build/test scripts preserve complete native command output in addition to PowerShell messages.
 
-The foundation already includes local diagnostics, safe cleanup, reversible Registry workflows, update discovery, reporting, dashboard/CLI operation and WinPE-oriented recovery support.
+This is stronger evidence than a source-only or design-only baseline, but it remains bounded evidence.
 
-The product still requires the documented stabilization, controlled repair, OEM, remote-management and 1.0 release gates before it can be described as a stable finished product.
+## Support versus experimental validation
+
+The source documentation distinguishes two concepts:
+
+- **official development target:** Windows 11 x64 and compatible Windows 10 Enterprise/LTSC editions under the adopted `.NET` runtime/SDK;
+- **experimentally validated environment:** Windows 10 Pro 22H2 x64 with PowerShell 5.1 and .NET SDK 10.0.302.
+
+The second does not silently redefine the first.
+
+## Roadmap state
+
+`0.1 Foundation` is implemented. `0.2 Stabilization` is the next named milestone.
+
+Later milestones cover controlled repair, OEM-specific adapters, remote management and the gates for a stable 1.0 release.
+
+No equal-weight milestone percentage is treated as an engineering-progress or production-readiness metric.
+
+## Current limitations
+
+The available evidence does not establish:
+
+- production readiness;
+- complete Windows 10/11 validation coverage;
+- universal OEM/firmware coverage;
+- production remote-operation readiness;
+- broad WinPE hardware validation;
+- completion of the threat-model, recovery-drill, signing and reproducibility gates required for 1.0.

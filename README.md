@@ -2,10 +2,10 @@
 
 > **Status:** public sanitized showcase of a private/local Windows diagnosis, maintenance and recovery platform.  
 > **Source project:** `MLI-Knot-WinDiag`, kept private/local.  
-> **Safety model:** diagnosis is read-only by default; potentially destructive operations remain bounded, reversible or explicitly gated.
+> **Safety posture:** read before write, preview before maintenance, reversible actions where supported, and explicit gates for higher-risk operations.
 
 ![Status](https://img.shields.io/badge/status-public%20showcase-blue)
-![Roadmap](https://img.shields.io/badge/documented%20roadmap-16.7%25-yellow)
+![Baseline](https://img.shields.io/badge/baseline-0.1%20Foundation-brightgreen)
 ![Safety](https://img.shields.io/badge/default-read--only-darkgreen)
 ![Source](https://img.shields.io/badge/source%20project-private-orange)
 ![GitHub stars](https://img.shields.io/github/stars/proftectiagocosta-hash/MLI-Knot-WinDiag-Showcase?style=flat&label=stars)
@@ -28,56 +28,93 @@
 
 **MLI-Knot-WinDiag Showcase** é a superfície pública e sanitizada do projeto privado **MLI-Knot-WinDiag**.
 
-O projeto fonte reúne diagnóstico do Windows, manutenção controlada, limpeza segura, auditoria do Registro, inventário de drivers e firmware, descoberta de atualizações, relatórios, operação remota preparada e suporte de recuperação por WinPE.
+A baseline privada `0.1.0` implementa uma plataforma de diagnóstico e manutenção do Windows com três direções documentadas de operação: uso local no Windows instalado, arquitetura remota autorizada e desativada por padrão, e suporte de recuperação offline orientado a WinPE.
 
-O desenho é deliberadamente conservador: diagnóstico é somente leitura por padrão, limpeza usa prévia/quarentena/restauração, alterações de Registro são reversíveis e firmware não é atualizado por automação genérica.
+O projeto não é apresentado como um simples conjunto de scripts. A base reúne orquestração de diagnóstico, API local e dashboard, CLI, coletores específicos do Windows, limpeza controlada, auditoria de inicialização do Registro, descoberta de atualizações, relatórios e componentes de recuperação.
 
-### Capacidades representadas
+### Capacidades implementadas na baseline
 
-A base atual documenta:
+A fonte privada documenta e materializa:
 
-- motor de diagnóstico local;
-- API local e dashboard;
-- CLI;
-- inventário de sistema, hardware, armazenamento, rede, serviços, eventos, políticas, Registro, drivers e firmware;
-- descoberta de atualizações aplicáveis;
-- limpeza segura com preview, dry-run, quarentena, recibos e restauração;
-- auditoria de inicialização do Registro com disable/restore;
-- relatórios JSON e HTML;
-- jobs assíncronos de diagnóstico;
-- builder de WinPE e diagnóstico offline;
-- arquitetura remota preparada, desativada por padrão.
+- diagnóstico de sistema, hardware, armazenamento, rede, serviços, eventos, políticas, Registro, drivers e firmware;
+- API local e dashboard no navegador;
+- CLI para diagnóstico e operações previstas pela baseline;
+- jobs assíncronos de diagnóstico com acompanhamento de progresso;
+- geração de relatórios JSON e HTML;
+- limpeza com preview, dry-run, regras de escopo, quarentena e restauração;
+- auditoria de inicialização do Registro com fluxo reversível de disable/restore;
+- inventário de drivers e firmware e descoberta de candidatos via Windows Update;
+- assets e scripts para ambiente de recuperação WinPE;
+- arquitetura remota preparada, mas local-only e desativada por padrão na configuração inicial.
 
-### Marcador de progresso
+### Evidência de validação registrada
 
-O roadmap fonte possui **6 marcos nomeados**:
+A documentação da fonte registra uma validação real da baseline em Windows:
 
-`0.1 Foundation`, `0.2 Stabilization`, `0.3 Controlled repair`, `0.4 OEM adapters`, `0.5 Remote management` e `1.0 Stable product`.
+- solução compilada em **Release**;
+- projetos Core, Windows, CLI, App e SmokeTests compilados;
+- **smoke tests aprovados**;
+- auditoria estrutural aprovada no checkpoint registrado;
+- resolvedor robusto do SDK `.NET` validado;
+- logs automáticos de build e teste funcionando no checkpoint registrado.
 
-O marco **0.1 Foundation** está documentado como implementado.
+Em documentação posterior da mesma baseline, os scripts de build/teste foram corrigidos para preservar também a saída nativa completa e datada.
 
-**Marcador público por contagem de marcos documentados: 1/6 = 16,7%.**
+O ambiente experimentalmente validado registrado foi **Windows 10 Pro 22H2 x64, PowerShell 5.1 e .NET SDK 10.0.302**.
 
-Esse percentual mede somente **marcos nomeados do roadmap com peso unitário**. Ele não estima esforço de engenharia, quantidade de código, maturidade de segurança ou prontidão de produção. Os marcos possuem complexidades diferentes.
+Essa evidência comprova operabilidade da baseline naquele ambiente. Ela **não transforma esse ambiente em plataforma oficialmente suportada**, não substitui a matriz de validação planejada e não constitui certificação de produção.
 
-### Estado e próximos passos
+A documentação do projeto define como alvo oficial de desenvolvimento Windows 11 x64 e edições Windows 10 Enterprise/LTSC compatíveis com o runtime/SDK adotado.
 
-A fundação funcional existe, mas o roadmap ainda prevê estabilização em Windows, proteção adicional de credenciais locais, recibos assinados, reparos controlados, adapters OEM, maturidade remota e os gates necessários para uma versão 1.0 estável.
+### Modelo de segurança
 
-### Limites públicos
+O produto segue princípios conservadores:
 
-Esta vitrine não publica:
+- observar antes de alterar;
+- separar diagnóstico de operações de escrita;
+- exigir preview antes de manutenção;
+- preferir quarentena ou desativação a exclusão;
+- preservar possibilidade de restauração quando suportada;
+- manter exposição remota desativada por padrão;
+- não realizar flashing genérico de BIOS/UEFI ou firmware;
+- não instalar drivers apenas porque foram descobertos.
 
-- código-fonte privado;
-- chaves locais, credenciais ou dados de runtime;
-- logs operacionais;
-- relatórios reais de máquinas;
-- nomes de usuários, máquinas ou ambientes;
-- IPs, gateways, identificadores de hardware ou dispositivos reais;
-- quarentenas, backups ou artefatos de restauração reais;
-- checkpoints internos;
-- configurações privadas de implantação;
-- procedimentos que enfraqueçam os gates de segurança.
+A arquitetura remota existe como direção técnica, mas operação remota de produção exige gates adicionais de transporte, identidade, autorização, auditoria e recuperação.
+
+### Estado do roadmap
+
+O estado público correto é qualitativo, não um percentual arbitrário:
+
+```text
+0.1 Foundation        implemented
+0.2 Stabilization     next
+0.3 Controlled repair planned
+0.4 OEM adapters      planned
+0.5 Remote management planned
+1.0 Stable product    gated future release
+```
+
+A antiga representação `1/6 = 16,7%` era apenas uma divisão matemática de marcos com pesos iguais. Ela não é uma métrica definida pela fonte para esforço, maturidade ou prontidão e, por isso, não é usada como indicador principal nesta vitrine.
+
+### O que ainda não está provado
+
+A baseline atual não autoriza afirmar:
+
+- prontidão para produção;
+- validação completa em toda a matriz Windows 10/11;
+- cobertura universal de hardware, OEMs, drivers ou firmware;
+- flashing automático e genérico de firmware;
+- implantação remota de produção pronta;
+- WinPE validado em uma matriz ampla de hardware;
+- conclusão dos gates de estabilização, recuperação, threat model e release 1.0.
+
+### Fronteira pública
+
+Esta vitrine publica propósito, arquitetura em alto nível, capacidades, princípios de segurança, evidência técnica sanitizada, estado do roadmap e limitações.
+
+Ela não publica código-fonte privado, credenciais, chaves, relatórios reais de máquinas, identificadores operacionais, logs internos, dados de quarentena/restauração, configurações privadas de implantação ou artefatos internos de continuidade.
+
+Documentos históricos da fonte podem registrar decisões de sincronização já superadas. A vitrine segue o estado atual comprovado e não transforma documentação histórica em verdade operacional presente.
 
 ### Documentação
 
@@ -95,23 +132,34 @@ Esta vitrine não publica:
 
 **MLI-Knot-WinDiag Showcase** is the public sanitized surface of the private **MLI-Knot-WinDiag** project.
 
-The source project combines Windows diagnostics, controlled maintenance, safe cleanup, Registry auditing, driver and firmware inventory, update discovery, reporting, remote-ready architecture and WinPE recovery support.
+The private `0.1.0` baseline is a Windows diagnosis, controlled-maintenance and recovery platform. It combines local diagnostic orchestration, a local API/dashboard, CLI operation, Windows-specific collectors, reporting, reversible maintenance workflows, update discovery and WinPE-oriented recovery assets.
 
-The design is intentionally conservative: diagnosis is read-only by default, cleanup is reversible, Registry remediation is controlled and generic firmware flashing is not part of the automation model.
+### Recorded validation
 
-### Progress marker
+The source documentation records a real Windows validation in which the solution was built in **Release**, the Core, Windows, CLI, App and SmokeTests projects compiled, and the **smoke tests passed**.
 
-The documented roadmap contains six named milestones. The `0.1 Foundation` milestone is implemented.
+The recorded experimental environment was **Windows 10 Pro 22H2 x64, PowerShell 5.1 and .NET SDK 10.0.302**.
 
-**Public roadmap milestone-count marker: 1/6 = 16.7%.**
+This proves baseline operability in that recorded environment. It is not a production-readiness claim and does not redefine the project's officially documented support target.
 
-This is an equal-weight count of named roadmap milestones, not an engineering-effort or production-readiness estimate.
+### Current roadmap state
 
-### Public boundary
+```text
+0.1 Foundation        implemented
+0.2 Stabilization     next
+0.3 Controlled repair planned
+0.4 OEM adapters      planned
+0.5 Remote management planned
+1.0 Stable product    gated future release
+```
 
-Only sanitized documentation, fictional examples, public-safe diagrams and deliberately prepared screenshots belong here.
+This showcase does not use an equal-weight milestone percentage as an engineering-progress metric.
 
-Private source code, real machine reports, operational identifiers, credentials, local runtime material and internal continuity artifacts remain private.
+### Safety and limits
+
+Diagnosis and discovery are separated from write operations. Remote exposure is disabled by default, generic firmware flashing is outside the baseline automation model, and discovery of an update does not itself authorize installation.
+
+Production readiness, broad hardware/OEM validation, production remote operation and the full 1.0 release gates remain unproven.
 
 ---
 
@@ -121,12 +169,15 @@ Private source code, real machine reports, operational identifiers, credentials,
 Repository type: public sanitized showcase
 Source project: MLI-Knot-WinDiag
 Source visibility: private/local
-Documented roadmap milestones: 6
-Completed named milestones: 1
-Roadmap milestone-count marker: 16.7%
-Engineering effort completion claimed: no
+Current baseline: 0.1.0 Foundation
+Foundation implementation: present
+Recorded Windows Release build: passed
+Recorded smoke tests: passed
+Experimentally validated environment: Windows 10 Pro 22H2 x64 / PowerShell 5.1 / .NET SDK 10.0.302
+Next roadmap milestone: 0.2 Stabilization
 Production readiness claimed: no
-Default diagnosis mode: read-only
+Default remote exposure: disabled
+Generic firmware flashing: not part of baseline automation
 Private source code included: no
 Sensitive operational material included: no
 ```
